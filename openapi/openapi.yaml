@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  description: Order microservice.
-  title: Order Service
+  title: Example.com
+  termsOfService: 'https://example.com/terms/'
   contact:
     email: contact@example.com
     url: 'http://example.com/contact'
@@ -13,11 +13,11 @@ info:
     url: 'https://redocly.github.io/openapi-template/logo.png'
   description:
     $ref: ./info-description.md
-    tags:
-  - name: order
-    description: Example Order Service operations.
-  - name: payment
-    description: Operations about Payment Connector operations.
+tags:
+  - name: Echo
+    description: Example echo operations.
+  - name: User
+    description: Operations about users.
   - name: Tag
     description: This is a tag description.
 servers:
@@ -28,293 +28,28 @@ servers:
         description: Your tenant id
   - url: 'https://example.com/api/v1'
 paths:
-  /order-service/call_back:
-    get:
-      consumes:
-      - application/json
-      description: this endpoint check the order details and payment status etc and
-        returns the call back url to redirect
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.CallBackResponse'
-      summary: it returns the call back url
-      tags:
-      - order
-  /order-service/cancel_order:
-    post:
-      consumes:
-      - application/json
-      description: cancel order which is placed on the store
-      parameters:
-      - description: cancel order
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.CancelOrder'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.CancelOrderResponse'
-      summary: Cancel order
-      tags:
-      - order
-  /order-service/custom_order_info:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: create order
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.RootRequestOrder'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderResponse'
-      summary: get Roots bill number info from roots server
-      tags:
-      - order
-  /order-service/encrypt_key:
-    post:
-      consumes:
-      - application/json
-      description: this endpoint encrypts the requested identity token string into
-        cipher text
-      parameters:
-      - description: encrypts string into cipher text
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.Encryption'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.EncryptionResponse'
-      summary: Encrypts the requested string
-      tags:
-      - order
-  /order-service/merchant_orders:
-    get:
-      consumes:
-      - application/json
-      description: get the list of all order of a specifit merchant against its id
-      parameters:
-      - description: merchant id
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.MerchantOrdersRequest'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.MerchantOrdersResponse'
-      summary: Get all orders of a merchant
-      tags:
-      - order
-  /order-service/order_details:
-    get:
-      consumes:
-      - application/json
-      description: get order details which is place on the store by tracking_id
-      parameters:
-      - description: get order details
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.OrderDetail'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderDetailsResponse'
-      summary: Get order details
-      tags:
-      - order
-  /order-service/order_remaining_time:
-    get:
-      consumes:
-      - application/json
-      description: get order remaining time to cancel the order which is place on
-        the store by tracking_id
-      parameters:
-      - description: gets order remaining time
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.OrderRemainingTime'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderRemainingTimeResponse'
-      summary: Gets order remaining time to cancel
-      tags:
-      - order
-  /order-service/order_request_log:
-    get:
-      consumes:
-      - application/json
-      description: order requestlog get request logs from DB.
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderRequestLogResp'
-      summary: Order RequestLog
-      tags:
-      - order
-  /order-service/payall:
-    post:
-      consumes:
-      - application/json
-      description: this endpoint call by for pay all installments working
-      parameters:
-      - description: call payment gateway for status
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.InstalmentRequest'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderResponse'
-      summary: Make the internal payment gateways call and get the status of payment
-      tags:
-      - order
-  /order-service/paynth:
-    post:
-      consumes:
-      - application/json
-      description: this endpoint call by for pay nth installment working
-      parameters:
-      - description: call payment gateway for status
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.InstalmentRequest'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderResponse'
-      summary: Make the internal payment gateways call and get the status of payment
-      tags:
-      - order
-  /order-service/place_custom_order:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: create order
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.Order'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderResponse'
-      summary: Create order
-      tags:
-      - order
-  /order-service/place_order:
-    post:
-      consumes:
-      - application/json
-      description: create order which is place on the store
-      parameters:
-      - description: create order
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.Order'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OrderResponse'
-      summary: Create order
-      tags:
-      - order
-  /order-service/send_otp:
-    post:
-      consumes:
-      - application/json
-      description: it sends otp for confirm otp
-      parameters:
-      - description: send otp
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.OTP'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.OTPResp'
-      summary: Send OTP For confirm OTP
-      tags:
-      - order
-  /order-service/show_discount:
-    post:
-      consumes:
-      - application/json
-      description: get coupon code details that whether it exists or not and its value
-        amount
-      parameters:
-      - description: get coupon code details
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/DTO.ShowDiscountRequest'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.ShowDiscountResponse'
-      summary: Get coupon code details
-      tags:
-      - order
-  /order-service/webhook/{paymentprocessor}:
-    post:
-      consumes:
-      - application/json
-      description: this endpoint call by payment gateway internally to make sure the
-        payment status
-      parameters:
-      - description: call payment gateway for status
-        in: body
-        name: user
-        required: true
-        schema:
-          additionalProperties: true
-          type: object
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/DTO.WebhookResponse'
-      summary: Make the internal payment gateways call and get the status of payment
-      tags:
-      - order
+  '/users/{username}':
+    $ref: 'paths/users_{username}.yaml'
+  /echo:
+    $ref: paths/echo.yaml
+  /pathItem:
+    $ref: paths/path-item.yaml
+  /pathItemWithExamples:
+    $ref: paths/path-item-with-examples.yaml
+components:
+  securitySchemes:
+    main_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://example.com/api/oauth/dialog'
+          scopes:
+            'read:users': read users info
+            'write:users': modify or remove users
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
+    basic_auth:
+      type: http
+      scheme: basic
